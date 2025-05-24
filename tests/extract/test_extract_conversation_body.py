@@ -4,6 +4,7 @@ def test_extract_conversation_body_selects_latest_branch_and_assembles_message_c
     conversation: dict[str, any] = {
         "mapping": {
             "node1": {
+                "id": "node1",
                 "children": ["node2", "node3"],
                 "parent": None,
                 "message": {
@@ -13,6 +14,7 @@ def test_extract_conversation_body_selects_latest_branch_and_assembles_message_c
                 }
             },
             "node2": {
+                "id": "node2",
                 "children": [],
                 "parent": "node1",
                 "message": {
@@ -29,6 +31,7 @@ def test_extract_conversation_body_selects_latest_branch_and_assembles_message_c
                 }
             },
             "node3": {
+                "id": "node3",
                 "children": ["node4"],
                 "parent": "node1",
                 "message": {
@@ -38,6 +41,7 @@ def test_extract_conversation_body_selects_latest_branch_and_assembles_message_c
                 }
             },
             "node4": {
+                "id": "node4",
                 "children": [],
                 "parent": "node3",
                 "message": {
@@ -49,9 +53,9 @@ def test_extract_conversation_body_selects_latest_branch_and_assembles_message_c
         }
     }
     expected: str = (
-        "# User (Thursday, January 1, 1970 00:00:50 UTC)\n\n"
+        "# User (Thursday, January 1, 1970 00:00:50 UTC) ^node1\n\n"
         "Root message\n\n"
-        "# GPT-4o (Thursday, January 1, 1970 00:02:30 UTC)\n\n"
+        "# GPT-4o (Thursday, January 1, 1970 00:02:30 UTC) ^node2\n\n"
         "First part | Second part"
     )
     result: str = extract_conversation_body(conversation)

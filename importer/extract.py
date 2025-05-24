@@ -1,8 +1,6 @@
 from datetime import datetime
 from pathlib import Path
 
-import pytz
-
 from importer.dates import epoch_to_dt
 from importer.graph import find_latest_conversation_turn, resolve_message_chain_from_latest
 
@@ -34,7 +32,9 @@ def construct_header_for_turn(turn: dict[str, any]) -> str:
         label = "User"
     else:
         label = message.get("metadata", {}).get("model_slug", "System")
-    return f"# {label} ({date_str})"
+    turn_id: str | None = turn.get("id")
+    suffix: str = f" ^{turn_id}" if turn_id else ""
+    return f"# {label} ({date_str}){suffix}"
 
 def extract_turn_as_markdown(turn: dict[str, any]) -> str | None:
     body: str = extract_text_from_turn(turn)

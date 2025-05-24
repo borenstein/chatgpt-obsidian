@@ -1,10 +1,8 @@
-from datetime import datetime
-
-import pytz
+from datetime import datetime, timezone
 
 
 def epoch_to_dt(epoch_time: float) -> datetime:
-    return datetime.fromtimestamp(epoch_time, tz=pytz.UTC)
+    return datetime.fromtimestamp(epoch_time, tz=timezone.utc)
 
 def epoch_to_date(epoch_time: float) -> str:
     dt: datetime = epoch_to_dt(epoch_time)
